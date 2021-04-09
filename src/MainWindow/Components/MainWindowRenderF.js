@@ -1,17 +1,19 @@
 import { React, Component, useEffect, useState } from 'react'
 
 function MainWindowRenderF()  {
-    
-    handle = null;
-    
+
+
+        
+
+
     const [datafield, setDatafield] = useState();
     const [datahistory, setDatahistory] = useState([]);
-    const [isLoading, setIsLoading] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState();
 
     useEffect( () => {
         const handle = setInterval(async () => {
-            await fetch("http://markets-local/market/pricing/1.177671351?depth=2")
+            await fetch("http://markets-local/market/pricing/1.178086849?depth=2")
             .then(result => result.json())
             .then(
                 (result) => {
@@ -36,10 +38,11 @@ function MainWindowRenderF()  {
     });
 
     return (
-        <ul>
+        {isLoading) && 
+            <ul>
             
 
-                { datafield[0].runners.map(r => (
+            { datafield[0].runners.map(r => (
                 <li key={r.selectionId}>
                     {r.lastPriceTraded}
                 </li>))
@@ -54,9 +57,10 @@ function MainWindowRenderF()  {
 
                 
                 ) )}; 
+            </ul>
+        
+        }
 
-
-        </ul>
     )
         
 
@@ -66,6 +70,6 @@ function MainWindowRenderF()  {
 
 }
 
-export { MainWindowRender };
+export { MainWindowRenderF };
 
 ////

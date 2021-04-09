@@ -1,4 +1,5 @@
 import { React, Component, useEffect } from 'react'
+import {GraphingCanvas} from './GraphingCanvas'
 
 class MainWindowRender extends Component {
     
@@ -17,8 +18,8 @@ class MainWindowRender extends Component {
 
     async componentDidMount() {
         
-        setInterval(async () => {
-            await fetch("http://markets-local/market/pricing/1.177671351?depth=2")
+        this.handle = setInterval(async () => {
+            await fetch("http://markets-local/market/pricing/1.178086849?depth=5")
             .then(result => result.json())
             .then(
                 (result) => {
@@ -40,7 +41,7 @@ class MainWindowRender extends Component {
     } //componentDidMount
 
     componentWillUnmount() {
-        
+        clearInterval(this.handle);
     }
 
     render() {
@@ -52,27 +53,23 @@ class MainWindowRender extends Component {
             return <div>Loading data from market...</div>
         } else {
             return (
-                <ul>
-                    
-
-                     { datafield[0].runners.map(r => (
-                        <li key={r.selectionId}>
-                            {r.lastPriceTraded}
-                        </li>))
-                     }
-
-                    { datahistory.map( (h, i) => (
-                         <div>
-                            <span key={i}>History {i}</span>
-                            <span>{JSON.stringify(h[0].runners[0].ex.availableToLay)}</span>
-                            <span>{JSON.stringify(h[0].runners[0].ex.availableToBack)}</span>
-                         </div>
-
+                <div>
+                    <ul>
                         
-                     ) )}; 
+                        { datahistory.map( (h, i) => (
+                            <div>
+                                <span key={i}>History {i}</span>
+                                <span>{JSON.stringify(h[0].runners[0].ex.availableToLay)}</span>
+                                <span>{JSON.stringify(h[0].runners[0].ex.availableToBack)}</span>
+                            </div>
+
+                            
+                        ) )}; 
 
 
-                </ul>
+                    </ul>
+                    <GraphingCanvas />
+                </div>
             )
         }
 
